@@ -4,7 +4,6 @@ from rest_framework import serializers
 from .models import Food, Order, OrderItem, User
 
 
-# Ro'yxatdan o'tish serializatori
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -34,7 +33,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
         read_only_fields = ("narxi",)
 
 
-# To'liq buyurtma serializatori
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
 
