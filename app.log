@@ -11,3 +11,7 @@ INFO 2026-09-11 23:38:43,085 views Yangi taom qo'shildi: Lavash, Narxi: 30000.00
 INFO 2026-09-11 23:40:04,673 views Yangi buyurtma ID: 1, User: admin, Summa: 60000.00
 INFO 2026-09-11 23:43:29,753 views Buyurtma statusi o'zgardi ID: 1 - Eski: YARATILDI, Yangi: TAYYORLANMOQDA
 INFO 2026-09-11 23:45:38,754 views Yangi taom qo'shildi: Somsa, Narxi: 12000.00, Turi: ovqat
+INFO 2026-09-12 09:46:41,772 views Yangi taom qo'shildi: Cola, Narxi: 10000.00, Turi: ichimlik
+INFO 2026-09-12 09:46:45,296 views Yangi buyurtma ID: 1, User: simple_user, Summa: 60000.00
+INFO 2026-09-12 09:49:10,499 views Yangi taom qo'shildi: Cola, Narxi: 10000.00, Turi: ichimlik
+INFO 2026-09-12 09:49:13,512 views Yangi buyurtma ID: 1, User: simple_user, Summa: 60000.00
