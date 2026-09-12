@@ -1,8 +1,6 @@
 import logging
-from typing import Any
-
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, permissions, status, viewsets
+from rest_framework import generics, permissions
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.pagination import PageNumberPagination
 
@@ -34,8 +32,7 @@ class RegisterView(generics.CreateAPIView):
             f"Yangi foydalanuvchi ro'yxatdan o'tdi: {user.username} (Role: {getattr(user, 'role', 'user')})"
         )
 
-
-class FoodViewSet(viewsets.ModelViewSet):
+class FoodListCreateView(generics.ListCreateAPIView):
     queryset = Food.objects.all().order_by("id")
     serializer_class = FoodSerializer
     permission_classes = [IsAdminOrReadOnly]
@@ -49,6 +46,12 @@ class FoodViewSet(viewsets.ModelViewSet):
             f"Yangi taom qo'shildi: {food.nomi}, Narxi: {food.narxi}, Turi: {food.turi}"
         )
 
+
+class FoodDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Food.objects.all().order_by("id")
+    serializer_class = FoodSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
     def perform_update(self, serializer: FoodSerializer):
         old_price = self.get_object().narxi
         food = serializer.save()
@@ -58,7 +61,7 @@ class FoodViewSet(viewsets.ModelViewSet):
             )
 
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderListCreateView(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -77,6 +80,21 @@ class OrderViewSet(viewsets.ModelViewSet):
         logger.info(
             f"Yangi buyurtma ID: {order.id}, User: {self.request.user.username}, Summa: {order.jami_summa}"
         )
+
+
+class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Order.objects.none()
+
+        user = self.request.user
+        if getattr(user, "role", None) == "admin" or user.is_staff:
+            return Order.objects.all().order_by("-created_at")
+            
+        return Order.objects.filter(user=user).order_by("-created_at")
 
     def perform_update(self, serializer: OrderSerializer):
         user = self.request.user
